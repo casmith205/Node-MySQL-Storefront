@@ -1,0 +1,23 @@
+{
+  "name": "storefront-sql",
+  "version": "1.0.0",
+  "description": "Project exhibiting basic use of MySQL and node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casmith205/storefront-sql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^1.2.3",
+    "mysql": "^2.15.0"
+  },
+  "bugs": {
+    "url": "https://github.com/casmith205/storefront-sql/issues"
+  },
+  "homepage": "https://github.com/casmith205/storefront-sql#readme"
+}
