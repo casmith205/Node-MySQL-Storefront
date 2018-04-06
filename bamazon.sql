@@ -12,5 +12,19 @@ CREATE TABLE products (
     PRIMARY KEY (id)
 );
 
+INSERT INTO products
+(product_name, department_name, price, stock_quantity)
+VALUES
+("paper towels", "supplies", 10, 300),
+("dog food", "pets", 60, 30),
+("bleach", "supplies", 4, 150),
+("sun dress", "clothes", 30, 20),
+("eggs", "food", 3, 500),
+("gummy worms", "food", 2, 15),
+("nail polish", "beauty", 12, 100),
+("side table", "furniture", 150, 5),
+("couch", "furniture", 300, 3),
+("sqeaky toy", "pets", 9, 7);
+
 
 SELECT * FROM products;
