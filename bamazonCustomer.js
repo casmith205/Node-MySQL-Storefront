@@ -62,7 +62,7 @@ function buyItem() {
                     "UPDATE products SET ? WHERE ?",
                     [
                         {
-                            stock_quantity: (productChosen.stock_quantity - userResponse.quantity)
+                            stock_quantity: (productChosen.stock_quantity - parseFloat(userResponse.quantity))
                         },
                         {
                             item_id: productChosen.item_id

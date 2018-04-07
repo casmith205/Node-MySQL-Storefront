@@ -65,44 +65,83 @@ function viewProducts() {
         });
 };
 
-function addProduct() {
-    inquirer
-        .prompt([
-            {
-                name: "product_name",
-                type: "input",
-                message: "What's the name of the product?"
-            },
-            {
-                name: "department_name",
-                type: "input",
-                message: "What department does this product belong to?"
-            },
-            {
-                name: "price",
-                type: "input",
-                message: "What is the cost per unit?"
-            },
-            {
-                name: "stock_quantity",
-                type: "input",
-                message: "How many units of the product are available for purchase?"
-            }
-        ]).then(function (response) {
-            connection.query(
-                //   creating new item in database
-                "INSERT INTO products SET ?",
+function addQuantity() {
+    connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt([
                 {
-                    product_name: response.product_name,
-                    department_name: response.department_name,
-                    price: response.price,
-                    stock_quantity: response.stock_quantity
+                    name: "item_id",
+                    type: "input",
+                    message: "What's the id of the product?"
                 },
-                function (err, res) {
-                    if (err) throw err;
-                    console.log("-------------------------------------------\n Product was successfully added into inventory!\n -------------------------------------------\n");
-                    actionList();
+                {
+                    name: "stock_quantity",
+                    type: "input",
+                    message: "How many units of the product are being added to inventory?"
                 }
-            );
-        });
+            ]).then(function (userResponse) {
+                var productChosen;
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].item_id == userResponse.item_id) {
+                        productChosen = res[i];
+                    }
+                };
+                connection.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        {
+                            stock_quantity: (productChosen.stock_quantity + parseFloat(userResponse.stock_quantity))
+                        },
+                        {
+                            item_id: productChosen.item_id
+                        }
+                    ],
+                );
+                console.log("-------------------------------------------\nStock quantity was successfully updated!\n-------------------------------------------\n");
+                actionList();
+            });
+    })
 };
+
+function addProduct() {
+            inquirer
+                .prompt([
+                    {
+                        name: "product_name",
+                        type: "input",
+                        message: "What's the name of the product?"
+                    },
+                    {
+                        name: "department_name",
+                        type: "input",
+                        message: "What department does this product belong to?"
+                    },
+                    {
+                        name: "price",
+                        type: "input",
+                        message: "What is the cost per unit?"
+                    },
+                    {
+                        name: "stock_quantity",
+                        type: "input",
+                        message: "How many units of the product are available for purchase?"
+                    }
+                ]).then(function (response) {
+                    connection.query(
+                        //   creating new item in database
+                        "INSERT INTO products SET ?",
+                        {
+                            product_name: response.product_name,
+                            department_name: response.department_name,
+                            price: response.price,
+                            stock_quantity: response.stock_quantity
+                        },
+                        function (err, res) {
+                            if (err) throw err;
+                            console.log("-------------------------------------------\nProduct was successfully added into inventory!\n-------------------------------------------\n");
+                            actionList();
+                        }
+                    );
+                });
+        };
