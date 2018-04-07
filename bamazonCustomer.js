@@ -50,10 +50,34 @@ function buyItem() {
                 message: "How many would you like to buy?"
             }
         ]).then(function (userResponse) {
-            console.log(userResponse.itemList);
-            console.log(userResponse.quantity);
+            var productChosen;
+            // If the item name is equal to response choice, then get that info from the DB
+            for (var i = 0; i < res.length; i++) {
+                if (res[i].product_name === userResponse.itemList) {
+                    productChosen = res[i];
+                }
+            };
+            if (productChosen.stock_quantity > parseFloat(userResponse.quantity)) {
+                connection.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        {
+                            stock_quantity: (productChosen.stock_quantity - userResponse.quantity)
+                        },
+                        {
+                            item_id: productChosen.item_id
+                        }
+                    ],
+                );
+                console.log("\nThank you for your purchase totaling " + (productChosen.price * userResponse.quantity) +
+                    " dollars for " + userResponse.quantity + " units of " + productChosen.product_name);
+                console.log("\n-----------------------------------------------------------\n");
+            } else {
+                console.log("Sorry, we do not have enough in stock right now to fulfill your purchase. Please try again!");
+            }
 
-        });
-    }
-    )
+            start();
+        }
+        )
+    });
 };
