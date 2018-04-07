@@ -28,3 +28,13 @@ VALUES
 
 
 SELECT * FROM products;
+
+CREATE TABLE departments (
+    department_id INT AUTO_INCREMENT,
+    department_name VARCHAR(100),
+    over_head_costs INT,
+    PRIMARY KEY (department_id)
+);
+
+ALTER TABLE products
+  ADD product_sales INT;
