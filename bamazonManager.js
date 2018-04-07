@@ -55,12 +55,22 @@ function actionList() {
 
 
 function viewProducts() {
-    console.log("\n Here is everything currently in inventory: \n")
+    console.log("\nHere is everything currently in inventory: \n")
     connection.query("SELECT * FROM products",
         function (err, res) {
             if (err) throw err;
             console.table(res);
-            console.log("\n ------------------------------------------------------\n")
+            console.log("\n------------------------------------------------------\n")
+            actionList();
+        });
+};
+
+function viewLow(){
+    console.log("\nThe following products are running low (**less than 10 units in stock): \n")
+    connection.query("SELECT * FROM products WHERE stock_quantity<10",
+        function (err, res) {
+            if (err) throw err;
+            console.table(res);
             actionList();
         });
 };
