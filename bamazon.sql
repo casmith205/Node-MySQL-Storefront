@@ -36,5 +36,15 @@ CREATE TABLE departments (
     PRIMARY KEY (department_id)
 );
 
+INSERT INTO departments
+(department_name, over_head_costs)
+VALUES
+("supplies", 3000),
+("pets", 1200),
+("clothes", 2400),
+("food", 3500),
+("beauty", 2000),
+("furniture", 10000)
+
 ALTER TABLE products
   ADD product_sales INT;

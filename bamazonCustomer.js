@@ -20,7 +20,7 @@ connection.connect(function (err) {
 });
 
 function start() {
-    connection.query("SELECT * FROM products",
+    connection.query("SELECT item_id, product_name, price FROM products",
         function (err, res) {
             if (err) throw err;
             console.table(res);
