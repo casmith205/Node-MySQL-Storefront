@@ -20,6 +20,7 @@ connection.connect(function (err) {
     actionList();
 });
 
+// Ask what the supervisor wants to do and run a function based on their answer
 function actionList() {
     inquirer
         .prompt({
@@ -44,14 +45,19 @@ function actionList() {
         });
 };
 
-// JOIN DEPARTMENTS TABLE*******
+// Function to show the product sales and total profit by department
 function viewProductSales() {
-    // Select the department id, dept name and products sales. Right join the departments table to the products table
+    // Creating a variable to hold the alias information -- this is how we get total profit. Take the products table's product_sales and subtract the department table's OH costs
+    var alias = "(SUM(p.product_sales) - d.over_head_costs) AS total_profit";
+    // Creating a variable to hold the columns we want to see in our table
+    var columns =  "d.department_id, p.department_name, over_head_costs, product_sales, "+alias;
+    // Select the columns given above (with the alias) & right join the departments table to the products table
     // Group by the department_name and order by ID, ascending 
-    connection.query("SELECT d.department_id, p.department_name, product_sales FROM products p RIGHT JOIN departments d ON p.department_name=d.department_name GROUP BY d.department_name ORDER by d.department_id ASC",
+    connection.query("SELECT "+ columns+ " FROM products p RIGHT JOIN departments d ON p.department_name=d.department_name GROUP BY d.department_name ORDER by d.department_id ASC",
         function (err, res) {
             if (err) throw err;
             console.table(res);
+            // Re-start the process 
             actionList();
         });
 };

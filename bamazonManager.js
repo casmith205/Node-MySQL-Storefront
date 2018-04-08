@@ -14,11 +14,13 @@ var connection = mysql.createConnection({
     database: "bamazon"
 });
 
+// On connection to the database, run the actionList function
 connection.connect(function (err) {
     if (err) throw err;
     actionList();
 });
 
+// Ask what the manager wants to do and run a function based on their answer
 function actionList() {
     inquirer
         .prompt({
@@ -53,7 +55,7 @@ function actionList() {
         });
 };
 
-
+// Function used to query the DB and show all product information
 function viewProducts() {
     console.log("\nHere is everything currently in inventory: \n")
     connection.query("SELECT * FROM products",
@@ -61,20 +63,24 @@ function viewProducts() {
             if (err) throw err;
             console.table(res);
             console.log("\n------------------------------------------------------\n")
+            // Re-start the process 
             actionList();
         });
 };
 
+// Function used to query the DB and show only the low inventory, defined as less than 10 units available 
 function viewLow(){
     console.log("\nThe following products are running low (**less than 10 units in stock): \n")
     connection.query("SELECT * FROM products WHERE stock_quantity<10",
         function (err, res) {
             if (err) throw err;
             console.table(res);
+            // Re-start the process 
             actionList();
         });
 };
 
+// Function used to add more inventory based on management input
 function addQuantity() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
@@ -91,12 +97,14 @@ function addQuantity() {
                     message: "How many units of the product are being added to inventory?"
                 }
             ]).then(function (userResponse) {
+                // Getting the relevant product we want to update from the database
                 var productChosen;
                 for (var i = 0; i < res.length; i++) {
                     if (res[i].item_id == userResponse.item_id) {
                         productChosen = res[i];
                     }
                 };
+                // Set stock quantity to the current quantity plus the additions by the manager where the item id === the item id of the productChosen
                 connection.query(
                     "UPDATE products SET ? WHERE ?",
                     [
@@ -109,11 +117,13 @@ function addQuantity() {
                     ],
                 );
                 console.log("-------------------------------------------\nStock quantity was successfully updated!\n-------------------------------------------\n");
+                // Re-start the process 
                 actionList();
             });
     })
 };
 
+// Function used to add a new product (line in the table) based on user input
 function addProduct() {
             inquirer
                 .prompt([
@@ -139,7 +149,6 @@ function addProduct() {
                     }
                 ]).then(function (response) {
                     connection.query(
-                        //   creating new item in database
                         "INSERT INTO products SET ?",
                         {
                             product_name: response.product_name,
@@ -150,6 +159,7 @@ function addProduct() {
                         function (err, res) {
                             if (err) throw err;
                             console.log("-------------------------------------------\nProduct was successfully added into inventory!\n-------------------------------------------\n");
+                            // Re-start the process 
                             actionList();
                         }
                     );
