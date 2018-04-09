@@ -53,7 +53,7 @@ function viewProductSales() {
     var columns =  "d.department_id, p.department_name, over_head_costs, product_sales, "+alias;
     // Select the columns given above (with the alias) & right join the departments table to the products table
     // Group by the department_name and order by ID, ascending 
-    connection.query("SELECT "+ columns+ " FROM products p RIGHT JOIN departments d ON p.department_name=d.department_name GROUP BY d.department_name ORDER by d.department_id ASC",
+    connection.query("SELECT "+ columns+ " FROM departments d RIGHT JOIN products p ON d.department_name=p.department_name GROUP BY d.department_name ORDER by d.department_id ASC",
         function (err, res) {
             if (err) throw err;
             console.table(res);
