@@ -48,9 +48,9 @@ function actionList() {
 // Function to show the product sales and total profit by department
 function viewProductSales() {
     // Creating a variable to hold the alias information -- this is how we get total profit. Take the products table's product_sales and subtract the department table's OH costs
-    var alias = "(SUM(p.product_sales) - d.over_head_costs) AS total_profit";
+    var alias = "SUM(p.product_sales) - d.over_head_costs AS total_profit";
     // Creating a variable to hold the columns we want to see in our table
-    var columns =  "d.department_id, p.department_name, over_head_costs, product_sales, "+alias;
+    var columns =  "d.department_id, p.department_name, over_head_costs, SUM(product_sales), "+alias;
     // Select the columns given above (with the alias) & right join the departments table to the products table
     // Group by the department_name and order by ID, ascending 
     connection.query("SELECT "+ columns+ " FROM departments d RIGHT JOIN products p ON d.department_name=p.department_name GROUP BY d.department_name ORDER by d.department_id ASC",
