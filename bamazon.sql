@@ -44,7 +44,7 @@ VALUES
 ("clothes", 2400),
 ("food", 3500),
 ("beauty", 2000),
-("furniture", 10000)
+("furniture", 10000);
 
 ALTER TABLE products
   ADD product_sales INT;
